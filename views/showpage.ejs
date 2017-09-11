@@ -8,7 +8,6 @@
   <body>
         <input id='url' type="text">
         <button>获取文档</button>
-        <div class='article'></div>
   </body>
   <script type='text/javascript'>
     $('button').click(function(){
@@ -16,10 +15,7 @@
         if(url){
             $.post('/markup/spidepage',{url:url},(res)=>{
                 if(res){
-                     $("body").append(res.html);
-                    res.css.forEach((href)=>{
-                        $('head').append(`<link href=${href} />`)
-                    })
+                    $('html').html(res);
                 }
             })
         }
