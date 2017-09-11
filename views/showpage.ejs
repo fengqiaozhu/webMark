@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src='/javascripts/jquery-2.1.0.js'></script>
+  </head>
+  <body>
+        <input id='url' type="text">
+        <button>获取文档</button>
+        <div class='article'></div>
+  </body>
+  <script type='text/javascript'>
+    $('button').click(function(){
+        let url = $('#url').val();
+        if(url){
+            $.post('/markup/spidepage',{url:url},(res)=>{
+                if(res){
+                    res.css.forEach((href)=>{
+                        $('head').append(`<link href=${href} />`)
+                    })
+                    $('.article').html(res.html);                    
+                }
+            })
+        }
+    })
+  </script>
+</html>
