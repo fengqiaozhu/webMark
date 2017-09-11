@@ -16,10 +16,10 @@
         if(url){
             $.post('/markup/spidepage',{url:url},(res)=>{
                 if(res){
+                     $("body").append(res.html);
                     res.css.forEach((href)=>{
                         $('head').append(`<link href=${href} />`)
                     })
-                    $('.article').html(res.html);                    
                 }
             })
         }

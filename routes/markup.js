@@ -23,7 +23,24 @@ router.post('/spidepage', (req, res, next) => {
                     cssHref.push(href);
                 }
             })
-            res.send({ css: cssHref, html: $(articalElement.jianshu).html() })
+            let article = $(articalElement.jianshu);
+            article.siblings().remove();
+            let parents = article.parents();
+            let outEleAttr = "" 
+            let articalHtml = "";
+            parents.each(function(idx){
+                if(idx<parents.length-3){
+                    $(this).siblings().remove();
+                }else if(idx===parents.length-3){
+                    outEleAttr = ($(this).attr('class')?`.${$(this).attr('class')}`:false)||($(this).attr('id')?`#${$(this).attr('id')}`:false);
+                }
+            });
+            if(/^\./.test(outEleAttr)){
+                articalHtml=`<div class=${outEleAttr.split('.')[1]}>${$(outEleAttr).html()}</div>`
+            }else{
+                articalHtml=`<div id=${outEleAttr.split('#')[1]}>${$(outEleAttr).html()}</div>`
+            }
+            res.send({ css: cssHref, html: articalHtml })
         }
     })
 })
